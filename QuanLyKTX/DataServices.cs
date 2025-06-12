@@ -1,72 +1,87 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace QuanLyKTX
+namespace Doannhom4CongngheNET
 {
-    public class DataServices
+    class DataServices
     {
-        private SqlConnection conn;
-
-        public DataServices()
+        private static SqlConnection mySqlConnection;
+        private SqlDataAdapter myDataAdapter;
+        //hàm kết nối với CSDL
+        public bool OpenDB()
         {
-            conn = new SqlConnection(@"Data Source=DESKTOP-0DO0S0L\SQLEXPRESS;Initial Catalog=QuanLyKTX;Integrated Security=True");
-        }
-
-        public DataTable RunQuery(string maSV)
-        {
-            DataTable dt = new DataTable();
+            string conStr = "Data Source=(local);Initial Catalog=QuanLyKTX;Integrated Security=True;TrustServerCertificate=True";
             try
             {
-                conn.Open();
-                string query = @"SELECT YCTP.MaYeuCau, YCTP.NgayYeuCau, YCTP.TrangThai, 
-                                P.MaPhong, P.TenPhong, P.LoaiPhong, P.GiaThue,
-                                CASE 
-                                    WHEN YCTP.TrangThai = 'Chờ duyệt' THEN 'Đang chờ quản lý xét duyệt'
-                                    WHEN YCTP.TrangThai = 'Đã duyệt' THEN 'Yêu cầu của bạn đã được chấp nhận'
-                                    WHEN YCTP.TrangThai = 'Từ chối' THEN 'Yêu cầu của bạn đã bị từ chối'
-                                    WHEN YCTP.TrangThai = 'Huy' THEN 'Bạn đã hủy yêu cầu này'
-                                    ELSE 'Không xác định'
-                                END as MoTaTrangThai
-                                FROM YeuCau YCTP
-                                LEFT JOIN Phong P ON YCTP.MaPhong = P.MaPhong
-                                WHERE YCTP.MaSV = @MaSV
-                                ORDER BY YCTP.NgayYeuCau DESC";
-
-                SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@MaSV", maSV);
-                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                adapter.Fill(dt);
+                mySqlConnection = new SqlConnection(conStr);
+                mySqlConnection.Open();
             }
-            catch (Exception ex)
+            catch (SqlException ex)
             {
-                throw new Exception("Lỗi khi lấy dữ liệu yêu cầu thuê phòng: " + ex.Message);
+                DisplayError(ex);
+                mySqlConnection = null;
+                return false;
             }
-            finally
-            {
-                if (conn.State == ConnectionState.Open)
-                    conn.Close();
-            }
-            return dt;
+            return true;
         }
-
-        public void ExecuteNonQuery(string query)
+        //Hàm truy vấn dữ liệu
+        public DataTable RunQuery(string sSql)
+        {
+            DataTable myDataTable = new DataTable();
+            try
+            {
+                myDataAdapter = new SqlDataAdapter(sSql, mySqlConnection);
+                SqlCommandBuilder mySqlCommandBuilder = new SqlCommandBuilder(myDataAdapter);
+                myDataAdapter.Fill(myDataTable);
+            }
+            catch (SqlException ex)
+            {
+                DisplayError(ex);
+                return null;
+            }
+            return myDataTable;
+        }
+        //Hàm nhập nhật một DataTable vào một bảng của CSDL
+        public void Update(DataTable myDataTable)
         {
             try
             {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.ExecuteNonQuery();
+                myDataAdapter.Update(myDataTable);
             }
-            catch (Exception ex)
+            catch (SqlException ex)
             {
-                throw new Exception("Lỗi khi thực thi truy vấn: " + ex.Message);
-            }
-            finally
-            {
-                if (conn.State == ConnectionState.Open)
-                    conn.Close();
+                DisplayError(ex);
             }
         }
+        //Hàm thực hiện một câu lệnh SQL dựa trên SqlCommand
+        public void ExecuteNonQuery(string sSql)
+        {
+            SqlCommand mySqlCommand = new SqlCommand(sSql, mySqlConnection);
+            try
+            {
+                mySqlCommand.ExecuteNonQuery();
+            }
+            catch (SqlException ex)
+            {
+                DisplayError(ex);
+            }
+        }
+        public void DisplayError(SqlException ex)
+        {
+            string sSql = "SELECT * FROM Errors WHERE Number = " + ex.Number;
+            DataTable dtError = RunQuery(sSql);
+            if (dtError.Rows.Count > 0)
+                MessageBox.Show(dtError.Rows[0][1].ToString().Trim(), "Lỗi " + ex.Number.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Information);
+            else
+                MessageBox.Show(ex.Message, "Error " + ex.Number.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        
     }
-} 
+}

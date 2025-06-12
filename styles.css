@@ -1,0 +1,135 @@
+/* CSS Variables */
+:root {
+    --primary-color: #0d6efd;
+    --secondary-color: #6c757d;
+    --success-color: #198754;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --info-color: #0dcaf0;
+}
+
+/* General Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* Navbar Styles */
+.navbar {
+    background: linear-gradient(to right, var(--primary-color), #0a58ca);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    font-weight: bold;
+}
+
+.nav-link {
+    color: rgba(255,255,255,0.9) !important;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #fff !important;
+    transform: translateY(-1px);
+}
+
+/* Card Styles */
+.card {
+    border: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.card-title {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* Stats Item Styles */
+.stats-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.stats-item:last-child {
+    border-bottom: none;
+}
+
+.stats-item i {
+    width: 30px;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+}
+
+/* Table Styles */
+.table {
+    margin-bottom: 0;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+/* Button Styles */
+.btn {
+    border-radius: 4px;
+    padding: 0.375rem 0.75rem;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+}
+
+/* Badge Styles */
+.badge {
+    padding: 0.5em 0.75em;
+    font-weight: 500;
+}
+
+/* Form Styles */
+.form-control, .form-select {
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+    padding: 0.5rem 0.75rem;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(13,110,253,0.25);
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .card {
+        margin-bottom: 15px;
+    }
+    
+    .table-responsive {
+        margin-bottom: 0;
+    }
+    
+    .btn-sm {
+        padding: 0.2rem 0.4rem;
+    }
+} 

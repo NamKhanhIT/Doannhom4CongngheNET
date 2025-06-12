@@ -30,9 +30,10 @@
         {
             this.panelLogin = new System.Windows.Forms.Panel();
             this.LoginPicture = new System.Windows.Forms.PictureBox();
-            this.BtnSignUp = new System.Windows.Forms.Button();
             this.lbSignUp = new System.Windows.Forms.Label();
             this.panelDesktop = new System.Windows.Forms.Panel();
+            this.iconPictureBox2 = new FontAwesome.Sharp.IconPictureBox();
+            this.iconPictureBox1 = new FontAwesome.Sharp.IconPictureBox();
             this.BtnClose = new FontAwesome.Sharp.IconPictureBox();
             this.BtnMaximize = new FontAwesome.Sharp.IconPictureBox();
             this.BtnMinimize = new FontAwesome.Sharp.IconPictureBox();
@@ -46,6 +47,8 @@
             this.panelLogin.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LoginPicture)).BeginInit();
             this.panelDesktop.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.BtnClose)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.BtnMaximize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.BtnMinimize)).BeginInit();
@@ -55,7 +58,6 @@
             // 
             this.panelLogin.BackColor = System.Drawing.Color.LightSkyBlue;
             this.panelLogin.Controls.Add(this.LoginPicture);
-            this.panelLogin.Controls.Add(this.BtnSignUp);
             this.panelLogin.Controls.Add(this.lbSignUp);
             this.panelLogin.Dock = System.Windows.Forms.DockStyle.Left;
             this.panelLogin.Location = new System.Drawing.Point(0, 0);
@@ -75,20 +77,6 @@
             this.LoginPicture.TabIndex = 3;
             this.LoginPicture.TabStop = false;
             // 
-            // BtnSignUp
-            // 
-            this.BtnSignUp.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.BtnSignUp.BackColor = System.Drawing.Color.MistyRose;
-            this.BtnSignUp.FlatAppearance.BorderSize = 0;
-            this.BtnSignUp.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnSignUp.Location = new System.Drawing.Point(99, 344);
-            this.BtnSignUp.Name = "BtnSignUp";
-            this.BtnSignUp.Size = new System.Drawing.Size(149, 45);
-            this.BtnSignUp.TabIndex = 5;
-            this.BtnSignUp.Text = "Đăng kí";
-            this.BtnSignUp.UseVisualStyleBackColor = false;
-            this.BtnSignUp.Click += new System.EventHandler(this.BtnSignUp_Click);
-            // 
             // lbSignUp
             // 
             this.lbSignUp.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
@@ -96,14 +84,16 @@
             this.lbSignUp.BackColor = System.Drawing.Color.LightSkyBlue;
             this.lbSignUp.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbSignUp.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.lbSignUp.Location = new System.Drawing.Point(22, 307);
+            this.lbSignUp.Location = new System.Drawing.Point(54, 288);
             this.lbSignUp.Name = "lbSignUp";
-            this.lbSignUp.Size = new System.Drawing.Size(313, 20);
+            this.lbSignUp.Size = new System.Drawing.Size(247, 20);
             this.lbSignUp.TabIndex = 1;
-            this.lbSignUp.Text = "Chưa có tài khoản? Đăng kí tại đây !";
+            this.lbSignUp.Text = "Phần mềm quản lý Ký túc xá";
             // 
             // panelDesktop
             // 
+            this.panelDesktop.Controls.Add(this.iconPictureBox2);
+            this.panelDesktop.Controls.Add(this.iconPictureBox1);
             this.panelDesktop.Controls.Add(this.BtnClose);
             this.panelDesktop.Controls.Add(this.BtnMaximize);
             this.panelDesktop.Controls.Add(this.BtnMinimize);
@@ -120,6 +110,32 @@
             this.panelDesktop.Size = new System.Drawing.Size(617, 474);
             this.panelDesktop.TabIndex = 1;
             this.panelDesktop.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelDesktop_MouseDown);
+            // 
+            // iconPictureBox2
+            // 
+            this.iconPictureBox2.BackColor = System.Drawing.SystemColors.Control;
+            this.iconPictureBox2.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.iconPictureBox2.IconChar = FontAwesome.Sharp.IconChar.Lock;
+            this.iconPictureBox2.IconColor = System.Drawing.SystemColors.ControlText;
+            this.iconPictureBox2.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.iconPictureBox2.Location = new System.Drawing.Point(38, 219);
+            this.iconPictureBox2.Name = "iconPictureBox2";
+            this.iconPictureBox2.Size = new System.Drawing.Size(32, 49);
+            this.iconPictureBox2.TabIndex = 20;
+            this.iconPictureBox2.TabStop = false;
+            // 
+            // iconPictureBox1
+            // 
+            this.iconPictureBox1.BackColor = System.Drawing.SystemColors.Control;
+            this.iconPictureBox1.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.iconPictureBox1.IconChar = FontAwesome.Sharp.IconChar.HomeUser;
+            this.iconPictureBox1.IconColor = System.Drawing.SystemColors.ControlText;
+            this.iconPictureBox1.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.iconPictureBox1.Location = new System.Drawing.Point(38, 148);
+            this.iconPictureBox1.Name = "iconPictureBox1";
+            this.iconPictureBox1.Size = new System.Drawing.Size(32, 43);
+            this.iconPictureBox1.TabIndex = 19;
+            this.iconPictureBox1.TabStop = false;
             // 
             // BtnClose
             // 
@@ -202,9 +218,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TxtAccount.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.TxtAccount.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.TxtAccount.Location = new System.Drawing.Point(69, 151);
+            this.TxtAccount.Location = new System.Drawing.Point(76, 151);
             this.TxtAccount.Name = "TxtAccount";
-            this.TxtAccount.Size = new System.Drawing.Size(482, 22);
+            this.TxtAccount.Size = new System.Drawing.Size(475, 22);
             this.TxtAccount.TabIndex = 1;
             // 
             // TxtPassword
@@ -213,9 +229,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TxtPassword.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.TxtPassword.Cursor = System.Windows.Forms.Cursors.Default;
-            this.TxtPassword.Location = new System.Drawing.Point(69, 222);
+            this.TxtPassword.Location = new System.Drawing.Point(76, 222);
             this.TxtPassword.Name = "TxtPassword";
-            this.TxtPassword.Size = new System.Drawing.Size(482, 22);
+            this.TxtPassword.Size = new System.Drawing.Size(475, 22);
             this.TxtPassword.TabIndex = 2;
             this.TxtPassword.UseSystemPasswordChar = true;
             // 
@@ -227,7 +243,7 @@
             this.lbAccount.BackColor = System.Drawing.SystemColors.Control;
             this.lbAccount.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbAccount.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.lbAccount.Location = new System.Drawing.Point(64, 123);
+            this.lbAccount.Location = new System.Drawing.Point(72, 126);
             this.lbAccount.Name = "lbAccount";
             this.lbAccount.Size = new System.Drawing.Size(125, 22);
             this.lbAccount.TabIndex = 9;
@@ -241,7 +257,7 @@
             this.lbPassword.BackColor = System.Drawing.SystemColors.Control;
             this.lbPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbPassword.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.lbPassword.Location = new System.Drawing.Point(64, 194);
+            this.lbPassword.Location = new System.Drawing.Point(72, 197);
             this.lbPassword.Name = "lbPassword";
             this.lbPassword.Size = new System.Drawing.Size(88, 22);
             this.lbPassword.TabIndex = 10;
@@ -276,6 +292,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.LoginPicture)).EndInit();
             this.panelDesktop.ResumeLayout(false);
             this.panelDesktop.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.BtnClose)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.BtnMaximize)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.BtnMinimize)).EndInit();
@@ -287,7 +305,6 @@
 
         private System.Windows.Forms.Panel panelLogin;
         private System.Windows.Forms.Label lbSignUp;
-        private System.Windows.Forms.Button BtnSignUp;
         private System.Windows.Forms.PictureBox LoginPicture;
         private System.Windows.Forms.Panel panelDesktop;
         private FontAwesome.Sharp.IconPictureBox BtnClose;
@@ -300,5 +317,7 @@
         private System.Windows.Forms.Label lbAccount;
         private System.Windows.Forms.Label lbPassword;
         private System.Windows.Forms.Label lbLogin;
+        private FontAwesome.Sharp.IconPictureBox iconPictureBox2;
+        private FontAwesome.Sharp.IconPictureBox iconPictureBox1;
     }
 }

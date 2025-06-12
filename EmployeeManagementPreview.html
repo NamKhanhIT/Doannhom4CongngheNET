@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Nhân Viên - Preview</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0f0f0;
+        }
+
+        .winform-container {
+            width: 1200px;
+            height: 600px;
+            margin: 20px auto;
+            background: white;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            background: #4e73df;
+            color: white;
+            padding: 15px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            padding: 10px;
+            background: #f8f9fc;
+            border-bottom: 1px solid #e3e6f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-input {
+            width: 300px;
+            padding: 8px 12px;
+            border: 1px solid #d1d3e2;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .search-button {
+            background: #4e73df;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex: 1;
+        }
+
+        /* Data Grid */
+        .data-grid {
+            flex: 1;
+            padding: 10px;
+            overflow: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e3e6f0;
+        }
+
+        th {
+            background: #f8f9fc;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: #f8f9fc;
+        }
+
+        /* Form Panel */
+        .form-panel {
+            width: 400px;
+            padding: 20px;
+            background: #f8f9fc;
+            border-left: 1px solid #e3e6f0;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #5a5c69;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #d1d3e2;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .form-control:focus {
+            border-color: #4e73df;
+            outline: none;
+            box-shadow: 0 0 0 0.2rem rgba(78,115,223,.25);
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+            color: white;
+        }
+
+        .btn-primary {
+            background: #4e73df;
+        }
+
+        .btn-warning {
+            background: #f6c23e;
+        }
+
+        .btn-danger {
+            background: #e74a3b;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+        .btn-sm {
+            padding: 4px 8px;
+            font-size: 12px;
+        }
+
+        .btn-info {
+            background: #36b9cc;
+        }
+    </style>
+</head>
+<body>
+    <div class="winform-container">
+        <!-- Header -->
+        <div class="header">
+            <span>Quản Lý Nhân Viên</span>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <input type="text" class="search-input" placeholder="Tìm kiếm nhân viên...">
+            <button class="search-button">
+                <i class="fas fa-search"></i>
+                Tìm kiếm
+            </button>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Data Grid -->
+            <div class="data-grid">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mã NV</th>
+                            <th>Họ và tên</th>
+                            <th>Email</th>
+                            <th>Số điện thoại</th>
+                            <th>Phòng ban</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>NV001</td>
+                            <td>Nguyễn Văn A</td>
+                            <td>nguyenvana@email.com</td>
+                            <td>0123456789</td>
+                            <td>Quản lý</td>
+                            <td class="action-buttons">
+                                <button class="btn btn-info btn-sm">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn btn-warning btn-sm">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>NV002</td>
+                            <td>Trần Thị B</td>
+                            <td>tranthib@email.com</td>
+                            <td>0987654321</td>
+                            <td>Bảo vệ</td>
+                            <td class="action-buttons">
+                                <button class="btn btn-info btn-sm">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn btn-warning btn-sm">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Form Panel -->
+            <div class="form-panel">
+                <!-- Action Buttons -->
+                <div class="button-group">
+                    <button class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                        Thêm mới
+                    </button>
+                    <button class="btn btn-warning">
+                        <i class="fas fa-edit"></i>
+                        Sửa
+                    </button>
+                    <button class="btn btn-danger">
+                        <i class="fas fa-trash"></i>
+                        Xóa
+                    </button>
+                </div>
+
+                <!-- Form -->
+                <div class="form-group">
+                    <label>Mã nhân viên</label>
+                    <input type="text" class="form-control" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Họ và tên</label>
+                    <input type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Số điện thoại</label>
+                    <input type="tel" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Phòng ban</label>
+                    <select class="form-control">
+                        <option value="">Chọn phòng ban</option>
+                        <option value="1">Quản lý</option>
+                        <option value="2">Bảo vệ</option>
+                        <option value="3">Vệ sinh</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Ngày sinh</label>
+                    <input type="date" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Giới tính</label>
+                    <select class="form-control">
+                        <option value="">Chọn giới tính</option>
+                        <option value="1">Nam</option>
+                        <option value="2">Nữ</option>
+                        <option value="3">Khác</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Địa chỉ</label>
+                    <textarea class="form-control" rows="3"></textarea>
+                </div>
+
+                <!-- Save/Cancel Buttons -->
+                <div class="button-group">
+                    <button class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        Lưu
+                    </button>
+                    <button class="btn btn-danger">
+                        <i class="fas fa-times"></i>
+                        Hủy
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

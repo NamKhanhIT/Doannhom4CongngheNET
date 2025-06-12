@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Phòng - Ký Túc Xá Đại Học Vinh</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-university me-2"></i>
+                Ký Túc Xá Đại Học Vinh
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="fas fa-home me-1"></i> Trang chủ
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="rooms.html">
+                            <i class="fas fa-door-open me-1"></i> Phòng
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="students.html">
+                            <i class="fas fa-user-graduate me-1"></i> Sinh viên
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="bills.html">
+                            <i class="fas fa-file-invoice me-1"></i> Hóa đơn
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="maintenance.html">
+                            <i class="fas fa-tools me-1"></i> Bảo trì
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="reports.html">
+                            <i class="fas fa-chart-bar me-1"></i> Báo cáo
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="settings.html">
+                            <i class="fas fa-cog me-1"></i> Cài đặt
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h4 class="mb-4">Chọn tòa nhà</h4>
+        <div class="row mb-4">
+            <div class="col-md-12 d-flex flex-wrap gap-2">
+                <button class="btn btn-outline-primary building-btn" data-building="A">Tòa A (CS1)</button>
+                <button class="btn btn-outline-primary building-btn" data-building="B">Tòa B (CS1)</button>
+                <button class="btn btn-outline-primary building-btn" data-building="C">Tòa C (CS1)</button>
+                <button class="btn btn-outline-primary building-btn" data-building="D">Tòa D (CS1)</button>
+                <button class="btn btn-outline-primary building-btn" data-building="E">Tòa E (CS1)</button>
+                <button class="btn btn-outline-success building-btn" data-building="F">Tòa F (CS2)</button>
+                <button class="btn btn-outline-success building-btn" data-building="G">Tòa G (CS2)</button>
+            </div>
+        </div>
+        <div id="floor-filter-row" class="row mb-3" style="display:none;">
+            <div class="col-md-4">
+                <label for="floorSelect" class="form-label">Chọn tầng</label>
+                <select id="floorSelect" class="form-select">
+                    <option value="">Tất cả các tầng</option>
+                </select>
+            </div>
+        </div>
+        <div id="rooms-section">
+            <h5 class="mb-3">Danh sách phòng</h5>
+            <div id="rooms-list">
+                <div class="alert alert-info">Vui lòng chọn tòa nhà để xem danh sách phòng.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Chi tiết phòng -->
+    <div class="modal fade" id="roomDetailModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Chi tiết phòng</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="room-detail-body">
+                    <!-- Nội dung chi tiết phòng sẽ được render bằng JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+    <script>
+    // Dữ liệu mẫu cho các tòa/phòng
+    const buildings = {
+        'A': [
+            { code: 'A101', floor: 1, students: ['Nguyễn Văn A', 'Trần Thị B'], electricity: 120000, water: 40000, elecIndex: 150, waterIndex: 30, items: ['Giường', 'Bàn', 'Quạt', 'Tủ'] },
+            { code: 'A102', floor: 1, students: ['Lê Văn C'], electricity: 90000, water: 35000, elecIndex: 120, waterIndex: 25, items: ['Giường', 'Bàn', 'Quạt'] },
+            { code: 'A201', floor: 2, students: ['Nguyễn Thị D'], electricity: 95000, water: 37000, elecIndex: 130, waterIndex: 28, items: ['Giường', 'Bàn', 'Tủ'] }
+        ],
+        'B': [
+            { code: 'B201', floor: 2, students: ['Phạm Thị D'], electricity: 100000, water: 30000, elecIndex: 110, waterIndex: 20, items: ['Giường', 'Bàn', 'Tủ'] }
+        ],
+        'C': [],
+        'D': [],
+        'E': [],
+        'F': [
+            { code: 'F301', floor: 3, students: ['Ngô Văn E', 'Đỗ Thị F'], electricity: 130000, water: 50000, elecIndex: 180, waterIndex: 40, items: ['Giường', 'Bàn', 'Quạt', 'Tủ', 'Đèn học'] }
+        ],
+        'G': []
+    };
+
+    let currentBuilding = null;
+    let currentFloor = '';
+
+    // Xử lý chọn tòa
+    document.querySelectorAll('.building-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const building = this.getAttribute('data-building');
+            currentBuilding = building;
+            currentFloor = '';
+            updateFloorDropdown(building);
+            document.getElementById('floor-filter-row').style.display = 'flex';
+            renderRooms(building, '');
+        });
+    });
+
+    // Cập nhật dropdown tầng
+    function updateFloorDropdown(building) {
+        const rooms = buildings[building] || [];
+        const floorSet = new Set(rooms.map(r => r.floor));
+        const floorSelect = document.getElementById('floorSelect');
+        floorSelect.innerHTML = '<option value="">Tất cả các tầng</option>';
+        Array.from(floorSet).sort((a,b)=>a-b).forEach(floor => {
+            floorSelect.innerHTML += `<option value="${floor}">Tầng ${floor}</option>`;
+        });
+        floorSelect.value = '';
+    }
+
+    // Xử lý chọn tầng
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('floorSelect').addEventListener('change', function() {
+            currentFloor = this.value;
+            renderRooms(currentBuilding, currentFloor);
+        });
+    });
+
+    function renderRooms(building, floorFilter = '') {
+        const rooms = (buildings[building] || []).filter(r => !floorFilter || r.floor == floorFilter);
+        let html = '';
+        if (!building) {
+            html = `<div class="alert alert-info">Vui lòng chọn tòa nhà để xem danh sách phòng.</div>`;
+        } else if (rooms.length === 0) {
+            html = `<div class="alert alert-warning">Không có phòng nào cho lựa chọn này.</div>`;
+        } else {
+            html = `<div class="table-responsive"><table class="table"><thead><tr><th>Mã phòng</th><th>Tầng</th><th>Sinh viên đang ở</th><th>Tiền điện</th><th>Tiền nước</th><th>Chỉ số điện</th><th>Chỉ số nước</th><th>Đồ dùng</th><th>Chi tiết</th></tr></thead><tbody>`;
+            rooms.forEach(room => {
+                html += `<tr>
+                    <td>${room.code}</td>
+                    <td>${room.floor}</td>
+                    <td>${room.students.join('<br>')}</td>
+                    <td>${room.electricity.toLocaleString()}đ</td>
+                    <td>${room.water.toLocaleString()}đ</td>
+                    <td>${room.elecIndex}</td>
+                    <td>${room.waterIndex}</td>
+                    <td>${room.items.join(', ')}</td>
+                    <td><button class="btn btn-info btn-sm" onclick="showRoomDetail('${building}','${room.code}')"><i class="fas fa-eye"></i></button></td>
+                </tr>`;
+            });
+            html += '</tbody></table></div>';
+        }
+        document.getElementById('rooms-list').innerHTML = html;
+    }
+
+    // Hiển thị chi tiết phòng
+    window.showRoomDetail = function(building, code) {
+        const room = (buildings[building] || []).find(r => r.code === code);
+        if (!room) return;
+        let html = `<h5>Phòng ${room.code} - Tầng ${room.floor}</h5>
+            <p><strong>Sinh viên đang ở:</strong> ${room.students.length ? room.students.join(', ') : 'Chưa có'}</p>
+            <p><strong>Tiền điện:</strong> ${room.electricity.toLocaleString()}đ</p>
+            <p><strong>Tiền nước:</strong> ${room.water.toLocaleString()}đ</p>
+            <p><strong>Chỉ số điện:</strong> ${room.elecIndex}</p>
+            <p><strong>Chỉ số nước:</strong> ${room.waterIndex}</p>
+            <p><strong>Đồ dùng có sẵn:</strong> ${room.items.join(', ')}</p>`;
+        document.getElementById('room-detail-body').innerHTML = html;
+        var modal = new bootstrap.Modal(document.getElementById('roomDetailModal'));
+        modal.show();
+    }
+    </script>
+</body>
+</html> 

@@ -16,7 +16,7 @@ namespace Doannhom4CongngheNET
         //hàm kết nối với CSDL
         public bool OpenDB()
         {
-            string conStr = "Data Source=(local);Initial Catalog=QuanLyKTX;Integrated Security=True;TrustServerCertificate=True";
+            string conStr = "Data Source=.;Initial Catalog=QuanLyKTX;Integrated Security=True;TrustServerCertificate=True";
             try
             {
                 mySqlConnection = new SqlConnection(conStr);
@@ -81,7 +81,6 @@ namespace Doannhom4CongngheNET
             else
                 MessageBox.Show(ex.Message, "Error " + ex.Number.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-
         
     }
 }

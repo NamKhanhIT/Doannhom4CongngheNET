@@ -37,7 +37,7 @@
             // lbSoPhong
             // 
             this.lbSoPhong.AutoSize = true;
-            this.lbSoPhong.Location = new System.Drawing.Point(15, 17);
+            this.lbSoPhong.Location = new System.Drawing.Point(-4, 9);
             this.lbSoPhong.Name = "lbSoPhong";
             this.lbSoPhong.Size = new System.Drawing.Size(65, 16);
             this.lbSoPhong.TabIndex = 0;
@@ -46,7 +46,7 @@
             // lbLoaiPhong
             // 
             this.lbLoaiPhong.AutoSize = true;
-            this.lbLoaiPhong.Location = new System.Drawing.Point(15, 46);
+            this.lbLoaiPhong.Location = new System.Drawing.Point(-4, 38);
             this.lbLoaiPhong.Name = "lbLoaiPhong";
             this.lbLoaiPhong.Size = new System.Drawing.Size(80, 16);
             this.lbLoaiPhong.TabIndex = 1;
@@ -55,7 +55,7 @@
             // lbSucChua
             // 
             this.lbSucChua.AutoSize = true;
-            this.lbSucChua.Location = new System.Drawing.Point(15, 78);
+            this.lbSucChua.Location = new System.Drawing.Point(-4, 70);
             this.lbSucChua.Name = "lbSucChua";
             this.lbSucChua.Size = new System.Drawing.Size(65, 16);
             this.lbSucChua.TabIndex = 1;
@@ -65,7 +65,7 @@
             // 
             this.lbTinhTrang.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lbTinhTrang.AutoSize = true;
-            this.lbTinhTrang.Location = new System.Drawing.Point(44, 118);
+            this.lbTinhTrang.Location = new System.Drawing.Point(3, 112);
             this.lbTinhTrang.Name = "lbTinhTrang";
             this.lbTinhTrang.Size = new System.Drawing.Size(70, 16);
             this.lbTinhTrang.TabIndex = 1;
@@ -81,9 +81,8 @@
             this.Controls.Add(this.lbLoaiPhong);
             this.Controls.Add(this.lbSoPhong);
             this.Name = "UserControl1";
-            this.Size = new System.Drawing.Size(160, 142);
+            this.Size = new System.Drawing.Size(160, 139);
             this.Load += new System.EventHandler(this.UserControl1_Load);
-            this.Click += new System.EventHandler(this.UserControl1_Click);
             this.MouseLeave += new System.EventHandler(this.UserControl1_MouseLeave);
             this.MouseHover += new System.EventHandler(this.UserControl1_MouseHover);
             this.ResumeLayout(false);

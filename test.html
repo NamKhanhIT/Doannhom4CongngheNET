@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ thống Quản lý Ký túc xá</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --dark-blue: #2c3e50;
+            --light-gray: #f8f9fa;
+            --border-color: #e9ecef;
+            --green: #27ae60;
+            --red: #e74c3c;
+            --white: #ffffff;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 10px; }
+        .app-container { max-width: 1600px; margin: 0 auto; background: var(--white); border-radius: 15px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); overflow: hidden; display: flex; min-height: 95vh; }
+        .sidebar { width: 280px; background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%); color: var(--white); padding: 20px 0; overflow-y: auto; flex-shrink: 0; }
+        .logo { text-align: center; padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 20px; }
+        .logo h2 { font-size: 20px; margin-bottom: 8px; background: linear-gradient(45deg, var(--primary-color), #2ecc71); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .menu-item { padding: 15px 25px; cursor: pointer; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; font-size: 14px; }
+        .menu-item:hover { background: rgba(255,255,255,0.1); border-left-color: var(--primary-color); transform: translateX(5px); }
+        .menu-item.active { background: rgba(52, 152, 219, 0.3); border-left-color: var(--primary-color); }
+        .main-content { flex: 1; padding: 30px; background: var(--light-gray); overflow-y: auto; }
+        .header { margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .header h1 { color: var(--dark-blue); font-size: 28px; font-weight: 700; }
+        .toolbar { display: flex; gap: 15px; margin-bottom: 25px; align-items: center; flex-wrap: wrap; }
+        .search-box { padding: 12px 15px; border: 2px solid var(--border-color); border-radius: 10px; font-size: 14px; width: 280px; transition: all 0.3s ease; }
+        .btn { padding: 12px 20px; background: var(--primary-color); color: var(--white); border: none; border-radius: 10px; cursor: pointer; font-weight: 600; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .btn.btn-success { background: var(--green); }
+        .btn.btn-danger { background: var(--red); }
+        .content-section { animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Employee Card Grid Styles */
+        .employee-card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+        .employee-card { background: var(--white); border-radius: 15px; text-align: center; padding: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); position: relative; overflow: hidden; transition: all 0.3s ease; }
+        .employee-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.12); }
+        .employee-card .avatar { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 4px solid var(--primary-color); margin-bottom: 15px; }
+        .employee-card .name { font-size: 18px; font-weight: 600; color: var(--dark-blue); margin-bottom: 5px; }
+        .employee-card .position { font-size: 14px; color: var(--primary-color); margin-bottom: 15px; }
+        .employee-card .contact-info { font-size: 13px; color: #6c757d; margin: 5px 0; }
+        .card-actions { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(44, 62, 80, 0.8); display: flex; justify-content: center; align-items: center; gap: 15px; opacity: 0; transition: opacity 0.3s ease; }
+        .employee-card:hover .card-actions { opacity: 1; }
+        .card-actions .btn { padding: 10px 15px; border-radius: 50px; }
+
+        /* Modal Styles */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(5px); }
+        .modal-content { background-color: #fefefe; margin: 5% auto; padding: 30px; border: none; width: 80%; max-width: 600px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); animation: slideIn 0.4s ease-out; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(-30px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px solid var(--border-color); }
+        .modal-header h2 { font-size: 22px; color: var(--dark-blue); }
+        .close { color: #aaa; font-size: 28px; font-weight: bold; cursor: pointer; transition: color 0.2s; }
+        .close:hover { color: var(--red); }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .form-group { margin-bottom: 15px; }
+        .form-label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--dark-blue); font-size: 14px; }
+        .form-control { width: 100%; padding: 12px 15px; border: 2px solid var(--border-color); border-radius: 10px; font-size: 14px; background-color: var(--white); transition: border-color 0.2s; }
+        .form-control:focus { outline: none; border-color: var(--primary-color); }
+
+        /* Confirmation Modal Styles */
+        .confirm-modal-content { max-width: 450px; text-align: center; }
+        .confirm-modal-content .icon { font-size: 50px; color: var(--red); margin-bottom: 15px; }
+        .confirm-modal-content p { font-size: 16px; color: #555; margin-bottom: 25px; }
+        .confirm-modal-actions { display: flex; justify-content: center; gap: 15px; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="sidebar">
+             <div class="logo"><h2>🏠 QUẢN LÝ KTX</h2><p>Cơ sở Vinh, Nghệ An</p></div>
+             <div class="menu-item" onclick="showSection('dashboard')"><span>📊</span> Tổng quan</div>
+             <div class="menu-item active" onclick="showSection('employees')"><span>👨‍💼</span> Quản lý Nhân viên</div>
+             </div>
+
+        <div class="main-content">
+            <div id="employees" class="content-section">
+                <div class="header">
+                    <h1>Quản lý Nhân viên</h1>
+                    <button class="btn btn-success" onclick="openEmployeeModal()">➕ Thêm Nhân viên mới</button>
+                </div>
+                <div class="toolbar">
+                    <input type="text" class="search-box" placeholder="Tìm kiếm nhân viên...">
+                    <select class="form-control" style="width: 200px;">
+                        <option>Tất cả bộ phận</option>
+                        <option>Ban Quản lý</option>
+                        <option>Lễ tân</option>
+                        <option>Bảo vệ</option>
+                        <option>Vệ sinh</option>
+                    </select>
+                </div>
+                <div id="employee-grid" class="employee-card-grid">
+                    </div>
+            </div>
+             <div id="dashboard" class="content-section" style="display: none;"></div>
+        </div>
+    </div>
+
+    <div id="employee-form-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Thêm Nhân viên mới</h2>
+                <span class="close" onclick="closeModal('employee-form-modal')">&times;</span>
+            </div>
+            <form id="employee-form" onsubmit="event.preventDefault(); saveEmployee();">
+                <input type="hidden" id="employee-id">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label" for="employee-name">Họ và Tên</label>
+                        <input type="text" id="employee-name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="employee-position">Chức vụ</label>
+                        <input type="text" id="employee-position" class="form-control" required>
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <label class="form-label" for="employee-department">Bộ phận</label>
+                    <select id="employee-department" class="form-control">
+                        <option>Ban Quản lý</option>
+                        <option>Lễ tân</option>
+                        <option>Bảo vệ</option>
+                        <option>Vệ sinh</option>
+                    </select>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label" for="employee-email">Email</label>
+                        <input type="email" id="employee-email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="employee-phone">Số điện thoại</label>
+                        <input type="tel" id="employee-phone" class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="employee-join-date">Ngày vào làm</label>
+                    <input type="date" id="employee-join-date" class="form-control" required>
+                </div>
+                <div style="text-align: right; margin-top: 20px;">
+                    <button id="save-employee-btn" type="submit" class="btn btn-success">Lưu Nhân viên</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="confirm-delete-modal" class="modal">
+        <div class="modal-content confirm-modal-content">
+            <div class="icon">⚠️</div>
+            <h2>Xác nhận Xóa</h2>
+            <p id="delete-confirm-text"></p>
+            <div class="confirm-modal-actions">
+                <button class="btn btn-secondary" onclick="closeModal('confirm-delete-modal')">Hủy</button>
+                <button id="confirm-delete-btn" class="btn btn-danger" onclick="confirmDelete()">Xác nhận Xóa</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const sampleEmployees = [
+            { id: 1, name: 'Trần Minh Tuấn', position: 'Trưởng ban Quản lý', department: 'Ban Quản lý', email: 'tuan.tm@ktx.vn', phone: '0905111222', joinDate: '2022-08-15', avatarUrl: 'https://placehold.co/100x100/3498db/ffffff?text=MT' },
+            { id: 2, name: 'Lê Thị Hoài An', position: 'Nhân viên Lễ tân', department: 'Lễ tân', email: 'an.lth@ktx.vn', phone: '0913333444', joinDate: '2023-03-01', avatarUrl: 'https://placehold.co/100x100/2ecc71/ffffff?text=HA' },
+            { id: 3, name: 'Phạm Văn Hùng', position: 'Trưởng ca Bảo vệ', department: 'Bảo vệ', email: 'hung.pv@ktx.vn', phone: '0989555666', joinDate: '2021-11-20', avatarUrl: 'https://placehold.co/100x100/e74c3c/ffffff?text=VH' },
+            { id: 4, name: 'Nguyễn Thị Mai', position: 'Nhân viên Vệ sinh', department: 'Vệ sinh', email: 'mai.nt@ktx.vn', phone: '0935777888', joinDate: '2024-01-10', avatarUrl: 'https://placehold.co/100x100/f1c40f/ffffff?text=NM' },
+        ];
+        let employeeToDeleteId = null;
+
+        function renderEmployees() {
+            const grid = document.getElementById('employee-grid');
+            grid.innerHTML = '';
+            sampleEmployees.forEach(emp => {
+                const card = document.createElement('div');
+                card.className = 'employee-card';
+                card.innerHTML = `
+                    <img src="${emp.avatarUrl}" alt="Avatar" class="avatar">
+                    <div class="name">${emp.name}</div>
+                    <div class="position">${emp.position}</div>
+                    <div class="contact-info">📧 ${emp.email}</div>
+                    <div class="contact-info">📞 ${emp.phone}</div>
+                    <div class="card-actions">
+                        <button class="btn" onclick="openEmployeeModal(${emp.id})">✏️ Sửa</button>
+                        <button class="btn btn-danger" onclick="openDeleteConfirmation(${emp.id}, '${emp.name}')">🗑️ Xóa</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(s => s.style.display = 'none');
+            document.getElementById(sectionId).style.display = 'block';
+            document.querySelectorAll('.sidebar .menu-item').forEach(item => item.classList.remove('active'));
+            document.querySelector(`.menu-item[onclick="showSection('${sectionId}')"]`).classList.add('active');
+        }
+
+        function openModal(modalId) { document.getElementById(modalId).style.display = 'block'; }
+        function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; }
+        
+        function openEmployeeModal(id = null) {
+            const form = document.getElementById('employee-form');
+            form.reset();
+            const modalTitle = document.getElementById('modal-title');
+            const saveBtn = document.getElementById('save-employee-btn');
+            const idInput = document.getElementById('employee-id');
+
+            if (id) { // Edit mode
+                modalTitle.textContent = 'Chỉnh sửa Thông tin Nhân viên';
+                saveBtn.textContent = 'Cập nhật';
+                const employee = sampleEmployees.find(e => e.id === id);
+                idInput.value = employee.id;
+                document.getElementById('employee-name').value = employee.name;
+                document.getElementById('employee-position').value = employee.position;
+                document.getElementById('employee-department').value = employee.department;
+                document.getElementById('employee-email').value = employee.email;
+                document.getElementById('employee-phone').value = employee.phone;
+                document.getElementById('employee-join-date').value = employee.joinDate;
+            } else { // Add mode
+                modalTitle.textContent = 'Thêm Nhân viên mới';
+                saveBtn.textContent = 'Lưu Nhân viên';
+                idInput.value = '';
+            }
+            openModal('employee-form-modal');
+        }
+
+        function saveEmployee() {
+            const id = document.getElementById('employee-id').value;
+            if (id) { // Update existing
+                // In a real app, you would find and update the employee in the array
+                alert('Thông tin nhân viên đã được cập nhật!');
+            } else { // Add new
+                // In a real app, you would add a new employee object to the array
+                alert('Nhân viên mới đã được thêm thành công!');
+            }
+            closeModal('employee-form-modal');
+            renderEmployees(); // Re-render the list
+        }
+
+        function openDeleteConfirmation(id, name) {
+            employeeToDeleteId = id;
+            document.getElementById('delete-confirm-text').textContent = `Bạn có chắc chắn muốn xóa nhân viên "${name}"? Hành động này không thể hoàn tác.`;
+            openModal('confirm-delete-modal');
+        }
+
+        function confirmDelete() {
+            // In a real app, you would filter the array to remove the employee
+            alert(`Nhân viên với ID ${employeeToDeleteId} đã được xóa.`);
+            closeModal('confirm-delete-modal');
+            renderEmployees(); // Re-render the list
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            renderEmployees();
+            showSection('employees'); // Show employees section by default
+        });
+    </script>
+</body>
+</html>

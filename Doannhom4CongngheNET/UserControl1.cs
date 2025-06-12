@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Doannhom4CongngheNET.QuanLyKTXDataSetTableAdapters;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,9 +14,10 @@ namespace Doannhom4CongngheNET
 {
     public partial class UserControl1 : UserControl
     {
-        public string maphong;
+
         public string sophong;
         public string loaiphong;
+        public string tensv;
         public string tinhtrang;
         public string succhua;
         public string giathue;
@@ -25,20 +27,21 @@ namespace Doannhom4CongngheNET
         public UserControl1()
         {
             InitializeComponent();
+            
         }
 
         private void UserControl1_Load(object sender, EventArgs e)
         {
-            lbSoPhong.Text = sophong.ToString();
+            lbSoPhong.Text = "Số phòng: " + sophong.ToString();
             lbLoaiPhong.Text = loaiphong.ToString();
-            lbSucChua.Text = succhua.ToString();
-            lbTinhTrang.Text = tinhtrang.ToString();
+            lbSucChua.Text = "Sức chứa: " + succhua.ToString();
+            lbTinhTrang.Text = "Tình trạng: " + tinhtrang.ToString();
             if (tinhtrang == "Trống")
             {
                 lbTinhTrang.ForeColor = Color.Green;
             }
             
-            else if (tinhtrang == "Đang bảo trì")
+            else if (tinhtrang == "Đang sử dụng")
             {
                 lbTinhTrang.ForeColor = Color.DarkOrange;
             }
@@ -58,14 +61,21 @@ namespace Doannhom4CongngheNET
             BackColor = Color.White; 
         }
 
-        private void UserControl1_Click(object sender, EventArgs e)
-        {
-
-            var formCha = this.FindForm() as FrmSearchRoom;
-            if (formCha != null)
-            {
-                formCha.LayDuLieu(maphong,sophong,loaiphong,succhua,songuoithue,tinhtrang,tienich,giathue);
-            }
-        }
+        //private void UserControl1_Click(object sender, EventArgs e)
+        //{
+        //    if (this.FindForm() is FrmSearchRoom formCha)
+        //    {
+        //        formCha.LayDuLieu(
+        //            sophong,
+        //            loaiphong,
+        //            succhua,
+        //            tensv,
+        //            songuoithue,
+        //            tinhtrang,
+        //            tienich,
+        //            giathue
+        //        );
+        //    }
+        //}
     }
 }

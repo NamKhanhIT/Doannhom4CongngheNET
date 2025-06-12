@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Doannhom4CongngheNET.Resources;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,12 +10,15 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+
 
 namespace Doannhom4CongngheNET
 {
     public partial class FrmLogin : Form
     {
         private DataServices MyDataServices;
+        private QuanLyKTXEntities qlktx ;
         
         public static string MaNguoiDung { get; set; }
         public static string HoTen { get; set; }
@@ -84,37 +88,35 @@ namespace Doannhom4CongngheNET
             Application.Exit();
         }
 
-        private void BtnSignUp_Click(object sender, EventArgs e)
-        {
-            FrmRegister fRegister = new FrmRegister();
-            fRegister.Show();
-            this.Hide();
-        }
-
+        
         private void BtnLogin_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(TxtAccount.Text) || string.IsNullOrWhiteSpace(TxtPassword.Text))
+            {
+                MessageBox.Show("Vui lòng nhập tên đăng nhập và mật khẩu!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             MyDataServices = new DataServices();
             if (MyDataServices.OpenDB() == false)
             {
                 MessageBox.Show("Không thể kết nối đến cơ sở dữ liệu!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            qlktx = new QuanLyKTXEntities();
+            var user = qlktx.tblNguoiDungs
+                            .Where(u => u.TenDangNhap == TxtAccount.Text && u.MatKhau == TxtPassword.Text)
+                            .Select(u => new { u.MaNguoiDung, u.HoTen })
+                            .FirstOrDefault();
 
-            string sSql = "Select * From tblNguoiDung Where (TenDangNhap = N'" + TxtAccount.Text + "') and (MatKhau = N'" + TxtPassword.Text + "')";
-            DataTable dtUser = MyDataServices.RunQuery(sSql);
-
-            if (dtUser != null && dtUser.Rows.Count > 0)
+            if (user != null)   
             {
                 
-                string UserID = dtUser.Rows[0]["MaNguoiDung"].ToString();
-                FrmLogin.MaNguoiDung = UserID;
-
-
-                string HoTen = dtUser.Rows[0]["HoTen"].ToString();
-                FrmLogin.HoTen = HoTen;
+                FrmLogin.MaNguoiDung = user.MaNguoiDung.ToString();
+                FrmLogin.HoTen = user.HoTen;
 
                 MessageBox.Show("Đăng nhập thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                FrmSinhVienMenu SVMenu = new FrmSinhVienMenu();
+                FrmMainMenu SVMenu = new FrmMainMenu();
+                FrmMainMenu.MaNguoiDung = MaNguoiDung;
                 SVMenu.Show();
                 this.Hide();
             }
@@ -124,11 +126,12 @@ namespace Doannhom4CongngheNET
                 TxtAccount.Focus();
             }
         }
-
         private void CbPassword_CheckedChanged(object sender, EventArgs e)
         {
             TxtPassword.UseSystemPasswordChar = !CbPassword.Checked;
 
         }
+
+        
     }
 }
